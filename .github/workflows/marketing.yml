@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   deploy:
-    name: Upload to Amazon S3
+    name: Upload to Amazon S3 bucket
     runs-on: ubuntu-latest
 
     steps:
