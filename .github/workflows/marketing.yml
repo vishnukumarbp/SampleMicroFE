@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "marketing/**"
-      - ".github/**"
+      - ".github/marketing/**"
 
 defaults:
   run:

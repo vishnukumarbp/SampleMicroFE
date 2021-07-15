@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "container/**"
-      - ".github/**"
+      - ".github/container/**"
 
 defaults:
   run:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
-        env:
+        with:
           PRODUCTION_DOMAIN: ${{ secrets.PRODUCTION_DOMAIN }}
 
       - name: "Configure AWS Credentials"
