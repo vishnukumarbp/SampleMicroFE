@@ -33,3 +33,7 @@ jobs:
       - name: Copy files to the test website with the AWS CLI
         run: |
           aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/container/latest
+
+      - name: Invalidate cloudfront
+        run: |
+          aws cloudfront create-invalidation --distribution-id 4{{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --path "/container/latest/public.html"
