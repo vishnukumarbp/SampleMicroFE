@@ -21,7 +21,7 @@ export default ({ setOnSignedIn }) => {
       },
     });
     history.listen(onParentNavigate);
-  }, []);
+  });
 
   return <div ref={ref} />;
 };
