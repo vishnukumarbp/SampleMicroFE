@@ -1,0 +1,39 @@
+name: deploy-dashboard
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "dashboard/**"
+      - ".github/dashboard/**"
+
+defaults:
+  run:
+    working-directory: dashboard/
+
+jobs:
+  deploy:
+    name: Upload to Amazon S3 bucket
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: npm install
+      - run: npm run build
+
+      - name: "Configure AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 sync dist s3://${{ secrets.AWS_S3_BUCKET_NAME }}/dashboard/latest
+
+      - name: Invalidate cloudfront
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --path "/dashboard/latest/remoteEntry.html"
